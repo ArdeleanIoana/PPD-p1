@@ -43,8 +43,8 @@ public class Service {
         }
         lock = new ReentrantLock();
         noCancellations = lock.newCondition();
-        reservationRepository = new ReservationRepository("programari.txt");
-        taxRepository = new TaxRepository("plati.txt");
+        reservationRepository = new ReservationRepository("rezervations.txt");
+        taxRepository = new TaxRepository("payments.txt");
 
         TimerTask task = new TimerTask() {
             public void run() {
