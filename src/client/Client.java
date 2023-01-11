@@ -1,7 +1,7 @@
 package client;
 
-import domain.Reservation;
-import domain.Confirmation;
+import model.Reservation;
+import model.Confirmation;
 import utilsProp.Properties;
 
 import java.io.DataInputStream;
@@ -75,9 +75,9 @@ public class Client {
             Confirmation c = new Confirmation(in.readUTF());
 
             if(!c.getAccepted()){
-                System.out.println("Programare nereusita");
+                System.out.println("--Failed booking");
             }else{
-                System.out.println("Programare reusita");
+                System.out.println("--Successfully Booked");
 
                 out.writeUTF((new Confirmation(true)).toString());
                 out.flush();
