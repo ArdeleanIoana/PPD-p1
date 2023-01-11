@@ -1,4 +1,4 @@
-package domain;
+package model;
 
 public class Tax {
     private String date;

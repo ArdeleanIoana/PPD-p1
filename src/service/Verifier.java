@@ -1,7 +1,7 @@
 package service;
 
-import domain.Reservation;
-import domain.Tax;
+import model.Reservation;
+import model.Tax;
 
 import java.io.FileOutputStream;
 import java.util.*;
@@ -55,9 +55,9 @@ public class Verifier {
 
         for (String reservationString : reservations) {
             Reservation reservation = new Reservation(reservationString);
-            int idx = computeSlot(reservation.getTreatmentHour(), duration[reservation.getTreatmentType()]);
-            int nr = slotsLocations.get(reservation.getTreatmentLocation()).get(reservation.getTreatmentType()).get(idx);
-            slotsLocations.get(reservation.getTreatmentLocation()).get(reservation.getTreatmentType()).set(idx, nr + 1);
+            int idx = computeSlot(reservation.getTreatmentHour(), duration[reservation.getTreatmentId()]);
+            int nr = slotsLocations.get(reservation.getLocationId()).get(reservation.getTreatmentId()).get(idx);
+            slotsLocations.get(reservation.getLocationId()).get(reservation.getTreatmentId()).set(idx, nr + 1);
 
             if (!possiblyUnpaid.containsKey(reservation.getCnpClient()))
                 possiblyUnpaid.put(reservation.getCnpClient(), new LinkedList<>());
@@ -80,11 +80,11 @@ public class Verifier {
                 numberPayments = finalisedPayments.get(cnp);
             for (int i = 0; i < numberPayments; i++) {
                 Reservation resv = possiblyUnpaid.get(cnp).poll();
-                totalSums[resv.getTreatmentLocation()] += prices[resv.getTreatmentType()];
+                totalSums[resv.getLocationId()] += prices[resv.getTreatmentId()];
             }
             while (!possiblyUnpaid.get(cnp).isEmpty()) {
                 Reservation p = possiblyUnpaid.get(cnp).poll();
-                unpaid.get(p.getTreatmentLocation()).add(p);
+                unpaid.get(p.getLocationId()).add(p);
             }
         }
 

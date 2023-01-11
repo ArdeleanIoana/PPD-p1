@@ -1,8 +1,8 @@
 package server;
 
-import domain.Reservation;
-import domain.Confirmation;
-import domain.RezervationDTO;
+import model.Reservation;
+import model.Confirmation;
+import model.RezervationDTO;
 import service.Service;
 
 import java.io.DataInputStream;

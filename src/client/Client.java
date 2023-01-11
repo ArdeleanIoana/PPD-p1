@@ -1,7 +1,7 @@
 package client;
 
-import domain.Reservation;
-import domain.Confirmation;
+import model.Reservation;
+import model.Confirmation;
 import utilsProp.Properties;
 
 import java.io.DataInputStream;

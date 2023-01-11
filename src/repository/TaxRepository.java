@@ -1,6 +1,6 @@
 package repository;
 
-import domain.Tax;
+import model.Tax;
 
 import java.io.*;
 import java.util.Vector;

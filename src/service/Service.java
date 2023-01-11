@@ -1,14 +1,13 @@
 package service;
 
-import domain.Reservation;
-import domain.Tax;
+import model.Reservation;
+import model.Tax;
 import repository.ReservationRepository;
 import repository.TaxRepository;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -56,8 +55,8 @@ public class Service {
     }
 
     public boolean tryBooking(Reservation reservation) {
-        int location = reservation.getTreatmentLocation();
-        int treatment = reservation.getTreatmentType();
+        int location = reservation.getLocationId();
+        int treatment = reservation.getTreatmentId();
         String hour = reservation.getTreatmentHour();
 
         if (planner[location][treatment].tryCreateBooking(hour)) {
@@ -73,8 +72,8 @@ public class Service {
         String date = reservation.getReservationDate();
         String cnp = reservation.getCnpClient();
 
-        int location = reservation.getTreatmentLocation();
-        int type = reservation.getTreatmentType();
+        int location = reservation.getLocationId();
+        int type = reservation.getTreatmentId();
         int sum = planner[location][type].getPrice();
 
         Tax tax = new Tax(date, cnp, sum);
@@ -89,8 +88,8 @@ public class Service {
         String date = reservation.getReservationDate();
         String cnp = reservation.getCnpClient();
         String hour = reservation.getTreatmentHour();
-        int location = reservation.getTreatmentLocation();
-        int type = reservation.getTreatmentType();
+        int location = reservation.getLocationId();
+        int type = reservation.getTreatmentId();
         int sum = planner[location][type].getPrice();
 
         planner[location][type].cancelBooking(hour);
