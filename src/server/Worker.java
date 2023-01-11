@@ -2,7 +2,7 @@ package server;
 
 import model.Reservation;
 import model.Confirmation;
-import model.RezervationDTO;
+import model.ReservationDTO;
 import service.Service;
 
 import java.io.DataInputStream;
@@ -14,7 +14,7 @@ public class Worker {
 
     private static Service service = new Service();
 
-    static RezervationDTO createReservation(Socket clientSocket) {
+    static ReservationDTO createReservation(Socket clientSocket) {
         System.out.println("Client " + clientSocket.getPort()  + " ask for a reservation");
         boolean accepted = true;
         Reservation reservation = null;
@@ -30,7 +30,7 @@ public class Worker {
 
         } catch (IOException e) {
             e.printStackTrace();
-            return new RezervationDTO(-1, null, null);
+            return new ReservationDTO(-1, null, null);
         }
 
 //        try {
@@ -39,52 +39,52 @@ public class Worker {
 //            e.printStackTrace();
 //        }
 
-        return new RezervationDTO(accepted ? 1 : 0, reservation, clientSocket);
+        return new ReservationDTO(accepted ? 1 : 0, reservation, clientSocket);
     }
 
-    static RezervationDTO pay(RezervationDTO rezervationDto) {
-        if(rezervationDto.state == 1) {
+    static ReservationDTO pay(ReservationDTO reservationDto) {
+        if(reservationDto.state == 1) {
             try {
-                DataOutputStream out = new DataOutputStream(rezervationDto.socket.getOutputStream());
-                DataInputStream in = new DataInputStream(rezervationDto.socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(reservationDto.socket.getOutputStream());
+                DataInputStream in = new DataInputStream(reservationDto.socket.getInputStream());
 
                 in.readUTF();
-                service.pay(rezervationDto.reservation);
+                service.pay(reservationDto.reservation);
 
                 out.writeUTF((new Confirmation(true)).toString());
                 out.flush();
 
             } catch (IOException e) {
                 e.printStackTrace();
-                return new RezervationDTO(-1, null, null);
+                return new ReservationDTO(-1, null, null);
             }
         }
 
-        return rezervationDto;
+        return reservationDto;
     }
 
-    static void cancelPayment(RezervationDTO rezervationDto) {
-        if(rezervationDto.state == 1) {
+    static void cancelPayment(ReservationDTO reservationDto) {
+        if(reservationDto.state == 1) {
             try {
-                DataOutputStream out = new DataOutputStream(rezervationDto.socket.getOutputStream());
-                DataInputStream in = new DataInputStream(rezervationDto.socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(reservationDto.socket.getOutputStream());
+                DataInputStream in = new DataInputStream(reservationDto.socket.getInputStream());
 
                 Confirmation confirmation =  new Confirmation(in.readUTF());
                 //daca e falsa atunci inseamna ca nu se da cancel(sanse de 50%)
                 if(confirmation.getAccepted())
-                    service.cancelTax(rezervationDto.reservation);
+                    service.cancelTax(reservationDto.reservation);
 
                 out.writeUTF((new Confirmation(true)).toString());
                 out.flush();
-                rezervationDto.socket.close();
+                reservationDto.socket.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if(rezervationDto.state == 0) {
+        if(reservationDto.state == 0) {
             try {
-                rezervationDto.socket.close();
+                reservationDto.socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

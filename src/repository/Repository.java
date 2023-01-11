@@ -1,17 +1,27 @@
 package repository;
 
 import model.Reservation;
+import model.Tax;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
-public class ReservationRepository {
-    private String reservationFile;
+public class Repository {
 
-    public ReservationRepository(String reservationFile) {
+    private final String reservationFile = "rezervations.txt";
+    private final String paymentFile = "payments.txt";
+    public Repository(){
+        initReservation();
+        initTax();
+    }
+    private void initReservation(){
         try {
-            this.reservationFile = reservationFile;
+
             FileOutputStream outputStream = new FileOutputStream(reservationFile);
             outputStream.write("".getBytes());
             outputStream.close();
@@ -19,17 +29,15 @@ public class ReservationRepository {
             e.printStackTrace();
         }
     }
-
-    public synchronized void addReservation(Reservation Reservation) {
+    private void initTax(){
         try {
-            FileOutputStream outputStream = new FileOutputStream(reservationFile, true);
-            outputStream.write(Reservation.toFileString().getBytes());
-            outputStream.close();
+            FileOutputStream fileOut = new FileOutputStream(paymentFile);
+            fileOut.write("".getBytes());
+            fileOut.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public synchronized void deleteReservation(Reservation Reservation) {
         try {
             BufferedReader file = new BufferedReader(new FileReader(reservationFile));
@@ -53,6 +61,40 @@ public class ReservationRepository {
         } catch (Exception e) {
             System.out.println("Problem reading file.");
         }
+    }
+
+    public synchronized void addReservation(Reservation Reservation) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(reservationFile, true);
+            outputStream.write(Reservation.toFileString().getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public synchronized void addTax(Tax tax) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(paymentFile, true);
+            outputStream.write(tax.toFileString().getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized Vector<String> getAllTax() {
+        Vector<String> result = new Vector<String>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(paymentFile));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.add(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public synchronized List<String> getAllReservations() {

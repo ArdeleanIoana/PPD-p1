@@ -6,12 +6,12 @@ import java.io.*;
 import java.util.Vector;
 
 public class TaxRepository {
-    private String filePath;
+    private String paymentFile;
 
-    public TaxRepository(String filePath) {
+    public TaxRepository(String paymentFile) {
         try {
-            this.filePath = filePath;
-            FileOutputStream fileOut = new FileOutputStream(filePath);
+            this.paymentFile = paymentFile;
+            FileOutputStream fileOut = new FileOutputStream(paymentFile);
             fileOut.write("".getBytes());
             fileOut.close();
         } catch (IOException e) {
@@ -21,7 +21,7 @@ public class TaxRepository {
 
     public synchronized void addTax(Tax tax) {
         try {
-            FileOutputStream outputStream = new FileOutputStream(filePath, true);
+            FileOutputStream outputStream = new FileOutputStream(paymentFile, true);
             outputStream.write(tax.toFileString().getBytes());
             outputStream.close();
         } catch (IOException e) {
@@ -32,7 +32,7 @@ public class TaxRepository {
     public synchronized Vector<String> getAllTax() {
         Vector<String> result = new Vector<String>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            BufferedReader reader = new BufferedReader(new FileReader(paymentFile));
             String line;
             while ((line = reader.readLine()) != null) {
                 result.add(line);
