@@ -33,11 +33,7 @@ public class Worker {
             return new ReservationDTO(-1, null, null);
         }
 
-//        try {
-//            Thread.sleep(4000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
 
         return new ReservationDTO(accepted ? 1 : 0, reservation, clientSocket);
     }
