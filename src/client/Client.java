@@ -2,6 +2,7 @@ package client;
 
 import domain.Reservation;
 import domain.Confirmation;
+import utilsProp.Properties;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -65,7 +66,7 @@ public class Client {
 
     public void SendReservation(){
         try {
-            Socket socket = new Socket("localhost", 8080);
+            Socket socket = new Socket("localhost", Properties.getPort());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
 
