@@ -75,9 +75,9 @@ public class Client {
             Confirmation c = new Confirmation(in.readUTF());
 
             if(!c.getAccepted()){
-                System.out.println("Programare nereusita");
+                System.out.println("--Failed booking");
             }else{
-                System.out.println("Programare reusita");
+                System.out.println("--Successfully Booked");
 
                 out.writeUTF((new Confirmation(true)).toString());
                 out.flush();
