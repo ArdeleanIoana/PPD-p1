@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class Repository {
+public class Repository implements IRepository{
 
     private final String reservationFile = "rezervations.txt";
     private final String paymentFile = "payments.txt";
